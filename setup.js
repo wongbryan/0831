@@ -1,9 +1,10 @@
 var camera, scene, renderer, controls, gui;
 var angle = 0;
 var clock = new THREE.Clock();
-var time;
+var time; var startTime = new Date().getTime();
 
 var box;
+var shape;
 
 function resize(){
 	camera.aspect = window.innerWidth / window.innerHeight;
@@ -41,16 +42,33 @@ function init() {
 		scene.add(directionalLight);
 		scene.add(pointLight);
 
-	    var geometry = new THREE.BoxBufferGeometry( 1, 1, 1 );
-	    var material = new THREE.MeshPhongMaterial( { color: 0x111111 } );
-	    box = new THREE.Mesh( geometry, material );
-	    box.position.z = 2;
-	    scene.add( box );
+		var texture = new THREE.TextureLoader().load('assets/ocean.jpg');
+		texture.wrapT = texture.wrapS = THREE.RepeatWrapping;
+		var geom = new THREE.SphereBufferGeometry(1, 256, 256);
+		shapeMat = new THREE.ShaderMaterial({
+			transparent: true,
+			uniforms : {
+				"uTime" : { type: "f", value : 0.0 },
+				"texture" : { type : "t", value : texture},
+				"fSpeed" : { type : "f", value : 100.}
+			},
+			depthTest: false,
+			vertexShader : document.getElementById('vertexShader').textContent,
+			fragmentShader : document.getElementById('fragmentShader').textContent
+		});
+
+		shape = new THREE.Mesh(geom, shapeMat);
+		var s = 12;
+		shape.scale.set(s, s, s);
+		// shape.position.set()
+		scene.add(shape);
 
 		window.addEventListener('resize', resize);
 	}
 
 	function update(){
+		time = new Date().getTime() - startTime;
+		shapeMat.uniforms['uTime'].value = time * .000000250;
 		camera.lookAt(scene.position);
 		controls.update();
 	}
