@@ -19,7 +19,7 @@
 	uniform sampler2D texture;
 	varying vec2 vUv;
 	uniform float fSpeed;
-	varying float speed;
+	varying float opacity;
 
 	// Simplex 2D noise
 //
@@ -56,14 +56,12 @@
 		vUv = uv; //get uv coordinate on texture
 		vec4 color = texture2D(texture, uv);
 		float random = snoise(color.rb);
-		speed = 5.*color.r; //speed dependent on red
-		vec4 color2 = texture2D(texture, uv + uTime * speed);
+		opacity = .05*color.r; //speed dependent on red
+		vec4 color2 = texture2D(texture, uv + uTime * fSpeed*color.r);
 
 		float x = color2.r * random;
 		float y = color2.g * random;
 		float z = color2.b * random;
-
-		gl_PointSize = 1.;
 		
 		gl_Position = projectionMatrix * modelViewMatrix * vec4(x, y, z, 1.);
 	}
@@ -73,13 +71,13 @@
 	uniform float uTime;
 	uniform sampler2D texture;
 	varying vec2 vUv; //can only access attributes in vertex shader
-	varying float speed;
 	uniform float fSpeed;
+	varying float opacity;
 
 	void main(){
-		vec4 color = texture2D(texture, vUv + uTime * speed); //get color based on uv coord [0, 1]
+		vec4 color = texture2D(texture, vUv + uTime * fSpeed); //get color based on uv coord [0, 1]
 
-		gl_FragColor = vec4(color.rgb, 0.01);
+		gl_FragColor = vec4(color.rgb, opacity);
 	}
 </script>
 

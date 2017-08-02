@@ -42,7 +42,7 @@ function init() {
 		scene.add(directionalLight);
 		scene.add(pointLight);
 
-		var texture = new THREE.TextureLoader().load('assets/me.jpg');
+		var texture = new THREE.TextureLoader().load('assets/rain.jpg');
 		texture.wrapT = texture.wrapS = THREE.RepeatWrapping;
 		var geom = new THREE.SphereBufferGeometry(1, 256, 256);
 		shapeMat = new THREE.ShaderMaterial({
@@ -51,7 +51,7 @@ function init() {
 			uniforms : {
 				"uTime" : { type: "f", value : 0.0 },
 				"texture" : { type : "t", value : texture},
-				"fSpeed" : { type : "f", value : 10.},
+				"fSpeed" : { type : "f", value : 5.},
 			},
 			depthTest: false,
 			vertexShader : document.getElementById('vertexShader').textContent,
@@ -59,7 +59,7 @@ function init() {
 		});
 
 		shape = new THREE.Mesh(geom, shapeMat);
-		var s = 12;
+		var s = 7;
 		shape.scale.set(s, s, s);
 		// shape.position.set()
 		scene.add(shape);
