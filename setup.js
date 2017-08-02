@@ -42,15 +42,16 @@ function init() {
 		scene.add(directionalLight);
 		scene.add(pointLight);
 
-		var texture = new THREE.TextureLoader().load('assets/ocean.jpg');
+		var texture = new THREE.TextureLoader().load('assets/me.jpg');
 		texture.wrapT = texture.wrapS = THREE.RepeatWrapping;
 		var geom = new THREE.SphereBufferGeometry(1, 256, 256);
 		shapeMat = new THREE.ShaderMaterial({
 			transparent: true,
+			wireframe: true,
 			uniforms : {
 				"uTime" : { type: "f", value : 0.0 },
 				"texture" : { type : "t", value : texture},
-				"fSpeed" : { type : "f", value : 100.}
+				"fSpeed" : { type : "f", value : 10.},
 			},
 			depthTest: false,
 			vertexShader : document.getElementById('vertexShader').textContent,
