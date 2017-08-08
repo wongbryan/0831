@@ -6,6 +6,8 @@ var time; var startTime = new Date().getTime();
 var box;
 var shape;
 
+const MAX_VERTICES = 200000;
+
 function resize(){
 	camera.aspect = window.innerWidth / window.innerHeight;
 	camera.updateProjectionMatrix();
@@ -44,7 +46,36 @@ function init() {
 
 		var texture = new THREE.TextureLoader().load('assets/rain.jpg');
 		texture.wrapT = texture.wrapS = THREE.RepeatWrapping;
-		var geom = new THREE.SphereBufferGeometry(1, 256, 256);
+
+		/*INITIALIZE INITIAL POSITIONS*/
+		var sphereGeom = new THREE.SphereGeometry(1, 256, 256);
+
+		var geom = new THREE.BufferGeometry();
+		var positionArray = new Float32Array(MAX_VERTICES * 3);
+		for (var i=0; i<sphereGeom.vertices.length; i++){
+			var index = i*3;
+			positionArray[index] = sphereGeom.vertices[i].x;
+			positionArray[index+1] = sphereGeom.vertices[i].y;
+			positionArray[index+2] = sphereGeom.vertices[i].z;
+		}
+		geom.addAttribute('position', new THREE.BufferAttribute(positionArray, 3));
+		geom.attributes['position'].dynamic = true;
+
+		/*INITIALIZE TARGETS*/
+
+		var boxGeom = new THREE.BoxGeometry(1, 256, 256);
+		var targetPositionArray = new Float32Array(MAX_VERTICES * 3);
+		for (var i=0; i<boxGeom.vertices.length; i++){
+			var index = i*3;
+			targetPositionArray[index] = boxGeom.vertices[i].x;
+			targetPositionArray[index+1] = boxGeom.vertices[i].y;
+			targetPositionArray[index+2] = boxGeom.vertices[i].z;
+		}
+		geom.addAttribute('targetPosition', new THREE.BufferAttribute(targetPositionArray, 3));
+		geom.attributes['targetPosition'].dynamic = true;
+
+		/*INITIALIZE MATERIAL*/
+
 		shapeMat = new THREE.ShaderMaterial({
 			transparent: true,
 			wireframe: true,
@@ -65,6 +96,10 @@ function init() {
 		scene.add(shape);
 
 		window.addEventListener('resize', resize);
+	}
+
+	function morph(){
+		return;
 	}
 
 	function update(){
