@@ -46,9 +46,10 @@ function init() {
 		var texture = new THREE.TextureLoader().load('assets/rain.jpg');
 		texture.wrapT = texture.wrapS = THREE.RepeatWrapping;
 		var geom = new THREE.PlaneBufferGeometry(1, 1, 256, 256);
+		// var geom = new THREE.SphereBufferGeometry(1, 1, 256, 256);
 		shapeMat = new THREE.ShaderMaterial({
 			transparent: true,
-			wireframe: true,
+			// wireframe: true,
 			uniforms : {
 				"time" : { type: "f", value : 0.0 },
 				"heightMap" : { type : "t", value : hMap},
@@ -62,7 +63,7 @@ function init() {
 		});
 
 		shape = new THREE.Mesh(geom, shapeMat);
-		var s = 30;
+		var s = 5;
 		shape.scale.set(s, s, s);
 		shape.rotation.x = Math.PI/2.5;
 		// shape.position.set()

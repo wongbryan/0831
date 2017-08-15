@@ -56,10 +56,9 @@
 	    float frequency = 0.;
 	    //
 	    // Loop of octaves
-	    vec4 color = texture2D(texture, uv);
 	    for (int i = 0; i < OCTAVES; i++) {
 	        value += amplitud * abs(noise(st));
-	        st *= 2.2;
+	        st *= 2.;
 	        // amplitud = (1. - (color.r - color.g - color.b))/10.;
 	        amplitud *= .5;
 	        // value = abs(value);
@@ -75,8 +74,10 @@
 		vec2 offset = vec2(time, time);
 		vUv = uv * scale + offset;
 
-		float n = fbm(position.xy); //get noise for a coordinate (x, y)
+		vec4 color = texture2D(texture, uv + time/3.0);
+		// float n = fbm(position.xy+color.r/15.); //get noise for a coordinate (x, y)
 
+		float n = fbm(position.xy);
 		vec3 modifiedPos = position+n*normal;
 
 		gl_PointSize = 2.5;
