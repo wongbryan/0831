@@ -46,7 +46,7 @@ function init() {
 		var texture = new THREE.TextureLoader().load('assets/me.jpg');
 		texture.wrapT = texture.wrapS = THREE.RepeatWrapping;
 		var geom = new THREE.PlaneBufferGeometry(1, 1, 256, 256);
-		var geom = new THREE.SphereBufferGeometry(1, 256, 256);
+		// var geom = new THREE.SphereBufferGeometry(1, 256, 256);
 		shapeMat = new THREE.ShaderMaterial({
 			transparent: true,
 			// wireframe: true,
@@ -63,7 +63,7 @@ function init() {
 		});
 
 		shape = new THREE.Mesh(geom, shapeMat);
-		var s = 30;
+		var s = 25;
 		shape.scale.set(s, s, s);
 		// shape.rotation.x = Math.PI/2.5;
 		// shape.position.set()
