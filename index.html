@@ -72,8 +72,8 @@
 	    // Loop of octaves
 	    for (int i = 0; i < OCTAVES; i++) {
 	        value += amplitud * noise(st);
-	        st *= 2.;
-	        amplitud *= .5;
+	        st *= 2.1;
+	        amplitud *= .65;
 	    }
 	    return value;
 	}
@@ -89,26 +89,26 @@
 	// 	return fbm(p + 4.0*domainModifier2);
 	// }
 
-	float pattern(in vec2 p, out vec2 q, out vec2 r){
+	float pattern( in vec2 p )
+	  {
+	      vec2 q = vec2( fbm( p + vec2(0.0,0.0) ),
+	                     fbm( p + vec2(5.2,1.3) ) );
 
-	    q.x = fbm( p + vec2(0.0,0.0) );
-        q.y = fbm( p + vec2(5.2,1.3) );
+	      vec2 r = vec2( fbm( p + 4.0*q + vec2(1.7,9.2) ),
+	                     fbm( p + 4.0*q + vec2(8.3,2.8) ) );
 
-        r.x = fbm( p + 4.0*q + vec2(1.7,9.2) );
-        r.y = fbm( p + 4.0*q + vec2(8.3,2.8) );
-
-        return fbm( p + 4.0*r );
-	}
+	      return fbm( p + 4.0*r );
+	  }
 
 	void main(){
 		vec2 q; 
 		vec2 r;
 		vec2 j = vec2(0., 1.);
-		float p = pattern(pos.xy, q, r);
+		float p = pattern(pos.xy);
 
 		vec4 color = texture2D(texture, vUv + p);
 
-		gl_FragColor = color;
+		gl_FragColor = vec4(p, p, p, 1.);
 	}
 
 </script>
