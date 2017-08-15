@@ -42,17 +42,17 @@ function init() {
 		scene.add(directionalLight);
 		scene.add(pointLight);
 
-		var texture = new THREE.TextureLoader().load('assets/ocean.jpg');
+		var texture = new THREE.TextureLoader().load('assets/me.jpg');
 		texture.wrapT = texture.wrapS = THREE.RepeatWrapping;
-		var geom = new THREE.SphereBufferGeometry(1, 128, 128);
+		var geom = new THREE.PlaneBufferGeometry(1, 1);
 		shapeMat = new THREE.ShaderMaterial({
 			transparent: true,
-			wireframe: true,
 			uniforms : {
-				"uTime" : { type: "f", value : 0.0 },
+				"time" : { type: "f", value : 0.0 },
 				"texture" : { type : "t", value : texture},
-				"fSpeed" : { type : "f", value : 5.},
+				"speed" : { type : "f", value : 1.},
 			},
+			side : THREE.DoubleSide,
 			depthTest: false,
 			vertexShader : document.getElementById('vertexShader').textContent,
 			fragmentShader : document.getElementById('fragmentShader').textContent
@@ -69,7 +69,7 @@ function init() {
 
 	function update(){
 		time = new Date().getTime() - startTime;
-		shapeMat.uniforms['uTime'].value = time * .000000250;
+		shapeMat.uniforms['time'].value += .0005;
 		// camera.lookAt(scene.position);
 		controls.update();
 	}
