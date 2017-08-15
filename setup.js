@@ -43,9 +43,10 @@ function init() {
 		scene.add(pointLight);
 
 		var hMap = new THREE.TextureLoader().load('assets/height-map.jpg');
-		var texture = new THREE.TextureLoader().load('assets/rain.jpg');
+		var texture = new THREE.TextureLoader().load('assets/me.jpg');
 		texture.wrapT = texture.wrapS = THREE.RepeatWrapping;
 		var geom = new THREE.PlaneBufferGeometry(1, 1, 256, 256);
+		var geom = new THREE.SphereBufferGeometry(1, 256, 256);
 		shapeMat = new THREE.ShaderMaterial({
 			transparent: true,
 			// wireframe: true,
