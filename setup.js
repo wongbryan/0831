@@ -46,7 +46,7 @@ function init() {
 		// var geom = new THREE.SphereBufferGeometry(1, 1, 256, 256);
 		shapeMat = new THREE.ShaderMaterial({
 			transparent: true,
-			wireframe: true,
+			// wireframe: true,
 			side : THREE.DoubleSide,
 			depthTest: false,
 			vertexShader : document.getElementById('vertexShader').textContent,
