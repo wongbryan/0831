@@ -42,20 +42,11 @@ function init() {
 		scene.add(directionalLight);
 		scene.add(pointLight);
 
-		var hMap = new THREE.TextureLoader().load('assets/height-map.jpg');
-		var texture = new THREE.TextureLoader().load('assets/rain.jpg');
-		texture.wrapT = texture.wrapS = THREE.RepeatWrapping;
 		var geom = new THREE.PlaneBufferGeometry(1, 1, 256, 256);
 		// var geom = new THREE.SphereBufferGeometry(1, 1, 256, 256);
 		shapeMat = new THREE.ShaderMaterial({
 			transparent: true,
 			// wireframe: true,
-			uniforms : {
-				"time" : { type: "f", value : 0.0 },
-				"heightMap" : { type : "t", value : hMap},
-				"texture" : { type : "t", value : texture},
-				"speed" : { type : "f", value : 1.},
-			},
 			side : THREE.DoubleSide,
 			depthTest: false,
 			vertexShader : document.getElementById('vertexShader').textContent,
@@ -74,7 +65,7 @@ function init() {
 
 	function update(){
 		time = new Date().getTime() - startTime;
-		shapeMat.uniforms['time'].value += .0005;
+		// shapeMat.uniforms['time'].value += .0005;
 		// camera.lookAt(scene.position);
 		controls.update();
 	}
