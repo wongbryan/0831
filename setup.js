@@ -24,10 +24,12 @@ function init() {
 		
 		camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 10000 );
 		camera.position.set(0, 0, 10);
-		controls = new THREE.TrackballControls(camera, renderer.domElement);
-		controls.rotateSpeed = 2.0;
-		controls.panSpeed = 0.8;
-		controls.zoomSpeed = 1.5;
+		// controls = new THREE.TrackballControls(camera, renderer.domElement);
+		// controls.rotateSpeed = 2.0;
+		// controls.panSpeed = 0.8;
+		// controls.zoomSpeed = 1.5;
+		controls = new THREE.OrbitControls(camera, renderer.domElement);
+		controls.zoomSpeed = 4.0;
 
 		scene = new THREE.Scene();
 
@@ -42,31 +44,30 @@ function init() {
 		scene.add(directionalLight);
 		scene.add(pointLight);
 
-		var geom = new THREE.PlaneGeometry(1, 1, 64, 64);
+		var geom = new THREE.PlaneGeometry(500, 500, 32, 32);
 		// var geom = new THREE.SphereBufferGeometry(1, 1, 256, 256);
 		shapeMat = new THREE.ShaderMaterial({
-			transparent: true,
+			// transparent: true,
 			// wireframe: true,
 			side : THREE.DoubleSide,
-			depthTest: false,
+			// depthTest: false,
 			vertexShader : document.getElementById('vertexShader').textContent,
 			fragmentShader : document.getElementById('fragmentShader').textContent
 		});
 
 		shape = new THREE.Mesh(geom, shapeMat);
-		var s = 5;
+		var s = 1;
 		shape.scale.set(s, s, s);
-		// shape.rotation.x = Math.PI/2.5;
-		// shape.position.set()
+		shape.rotation.x = -Math.PI/2;
+		shape.position.set(0, -25, 0);
 		scene.add(shape);
 
 		window.addEventListener('resize', resize);
 	}
 
 	function update(){
-		time = new Date().getTime() - startTime;
-		// shapeMat.uniforms['time'].value += .0005;
-		// camera.lookAt(scene.position);
+		var delta = clock.getDelta();
+		// controls.update(delta);
 		controls.update();
 	}
 

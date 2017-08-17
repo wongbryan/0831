@@ -92,7 +92,7 @@
 	                                dot(p2,x2), dot(p3,x3) ) );
 	}
 
-	#define OCTAVES 6
+	#define OCTAVES 8
 	float fbm (in vec3 st) {
 	    // Initial values
 	    float value = 0.0;
@@ -101,9 +101,9 @@
 	    //
 	    // Loop of octaves
 	    for (int i = 0; i < OCTAVES; i++) {
-	        value += amplitud * snoise(st);
-	        st *= 2.;
-	        amplitud *= .5;
+	        value += amplitud * abs(snoise(st));
+	        st *= 2. ;
+	        amplitud *= 1.5;
 	    }
 	    return value;
 	}
@@ -195,8 +195,24 @@
 	                                dot(p2,x2), dot(p3,x3) ) );
 	}
 
+	#define OCTAVES 8
+	float fbm (in vec3 st) {
+	    // Initial values
+	    float value = 0.0;
+	    float amplitud = .5;
+	    float frequency = 0.;
+	    //
+	    // Loop of octaves
+	    for (int i = 0; i < OCTAVES; i++) {
+	        value += amplitud * abs(snoise(st));
+	        st *= 2. ;
+	        amplitud *= 1.5;
+	    }
+	    return value;
+	}
+
 	void main(){
-		float n = snoise(pos);
+		float n = fbm(pos);
 		gl_FragColor = vec4(n);
 	}
 
@@ -204,9 +220,7 @@
 
 <script src="bower_components/three.js/build/three.js"></script>
 <script src="bower_components/three.js/examples/js/controls/TrackballControls.js"></script>
-<script src="bower_components/three.js/examples/js/postprocessing/EffectComposer.js"></script>
-<script src="bower_components/three.js/examples/js/shaders/CopyShader.js"></script>
-<script src="bower_components/three.js/examples/js/postprocessing/ShaderPass.js"></script>
-<script src="bower_components/three.js/examples/js/postprocessing/RenderPass.js"></script>
+<script src="bower_components/three.js/examples/js/controls/FirstPersonControls.js"></script>
+<script src="bower_components/three.js/examples/js/controls/OrbitControls.js"></script>
 <script src="setup.js"></script>
 </html>
