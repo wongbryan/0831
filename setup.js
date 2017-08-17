@@ -4,7 +4,9 @@ var clock = new THREE.Clock();
 var time; var startTime = new Date().getTime();
 
 var box;
-var shape;
+var shape, shape2, shape3;
+var ground;
+var shapes = [];
 
 function resize(){
 	camera.aspect = window.innerWidth / window.innerHeight;
@@ -22,7 +24,7 @@ function init() {
 		renderer.setClearColor(0xededed);
 		container.appendChild( renderer.domElement );
 		
-		camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 10000 );
+		camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, .001, 10000 );
 		camera.position.set(0, 0, 10);
 		// controls = new THREE.TrackballControls(camera, renderer.domElement);
 		// controls.rotateSpeed = 2.0;
@@ -30,6 +32,8 @@ function init() {
 		// controls.zoomSpeed = 1.5;
 		controls = new THREE.OrbitControls(camera, renderer.domElement);
 		controls.zoomSpeed = 4.0;
+		// controls = new THREE.FirstPersonControls(camera, renderer.domElement);
+		// controls.moveSpeed = 1.0;
 
 		scene = new THREE.Scene();
 
@@ -44,23 +48,51 @@ function init() {
 		scene.add(directionalLight);
 		scene.add(pointLight);
 
-		var geom = new THREE.PlaneGeometry(500, 500, 32, 32);
-		// var geom = new THREE.SphereBufferGeometry(1, 1, 256, 256);
-		shapeMat = new THREE.ShaderMaterial({
-			// transparent: true,
-			// wireframe: true,
+		ground = new THREE.Group();
+
+		var geom = new THREE.PlaneGeometry(1, 1, 128, 128);
+		var shapeMat = new THREE.ShaderMaterial({
+			uniforms : {
+				time : { value : time }
+			},
 			side : THREE.DoubleSide,
 			// depthTest: false,
 			vertexShader : document.getElementById('vertexShader').textContent,
 			fragmentShader : document.getElementById('fragmentShader').textContent
 		});
 
-		shape = new THREE.Mesh(geom, shapeMat);
-		var s = 1;
-		shape.scale.set(s, s, s);
-		shape.rotation.x = -Math.PI/2;
-		shape.position.set(0, -25, 0);
-		scene.add(shape);
+		var s = 12;
+		for (var i=-1; i<2; i++){
+			var shape = new THREE.Mesh(geom, shapeMat);
+			shape.scale.set(s, s, s);
+			shape.rotation.z = i*Math.PI/2;
+			shape.position.set(0, i*(s - 1), 0);
+			ground.add(shape);
+			shapes.push(shape);
+			// scene.add(shape);
+		}
+
+		// shape = new THREE.Mesh(geom, shapeMat);
+		// var s = 12;
+		// shape.scale.set(s, s, s);
+
+		// shape.position.set(0, -s, 0);
+
+		// shape2 = shape.clone();
+		// shape2.rotation.z = Math.PI/2;
+		// shape2.position.set(0, 0, 0);
+
+		// shape3 = shape.clone();
+		// shape3.rotation.z = Math.PI;
+		// shape3.position.set(0, s, 0);
+
+		// ground.add(shape);
+		// ground.add(shape2);
+		// ground.add(shape3);
+
+		ground.rotation.x = -Math.PI/2.1;
+
+		scene.add(ground);
 
 		window.addEventListener('resize', resize);
 	}
@@ -69,6 +101,11 @@ function init() {
 		var delta = clock.getDelta();
 		// controls.update(delta);
 		controls.update();
+		for (var i=0; i<shapes.length; i++){
+			if(shapes[i].position.y <= -15)
+				shapes[i].position.y = 11;
+			shapes[i].position.y -= .023;
+		}
 	}
 
 	function animate(){
