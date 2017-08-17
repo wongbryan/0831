@@ -60,6 +60,9 @@ function init() {
 		// shape.position.set()
 		scene.add(shape);
 
+		var ball = new THREE.Mesh(new THREE.SphereGeometry(5, 64, 64), new THREE.MeshBasicMaterial({color: 0xff0000}));
+		scene.add(ball);
+
 		window.addEventListener('resize', resize);
 	}
 
