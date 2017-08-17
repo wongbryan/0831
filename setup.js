@@ -42,11 +42,11 @@ function init() {
 		scene.add(directionalLight);
 		scene.add(pointLight);
 
-		var geom = new THREE.PlaneBufferGeometry(1, 1, 256, 256);
+		var geom = new THREE.PlaneGeometry(1, 1, 64, 64);
 		// var geom = new THREE.SphereBufferGeometry(1, 1, 256, 256);
 		shapeMat = new THREE.ShaderMaterial({
 			transparent: true,
-			// wireframe: true,
+			wireframe: true,
 			side : THREE.DoubleSide,
 			depthTest: false,
 			vertexShader : document.getElementById('vertexShader').textContent,
@@ -56,12 +56,9 @@ function init() {
 		shape = new THREE.Mesh(geom, shapeMat);
 		var s = 5;
 		shape.scale.set(s, s, s);
-		shape.rotation.x = Math.PI/2.5;
+		// shape.rotation.x = Math.PI/2.5;
 		// shape.position.set()
 		scene.add(shape);
-
-		var ball = new THREE.Mesh(new THREE.SphereGeometry(5, 64, 64), new THREE.MeshBasicMaterial({color: 0xff0000}));
-		scene.add(ball);
 
 		window.addEventListener('resize', resize);
 	}
