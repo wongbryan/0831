@@ -15,166 +15,73 @@
 </body>
 
 <script type="vsh" id="vertexShader">
-	uniform sampler2D texture;
-	uniform float time;
-	uniform float speed;
 
 	varying vec3 pos;
-	varying vec2 vUv;
-
-	float random (in vec2 st) { 
-	    return fract(sin(dot(st.xy,
-	                         vec2(12.9898,78.233)))* 
-	        43758.5453123);
-	}
-
-	// Based on Morgan McGuire @morgan3d
-	// https://www.shadertoy.com/view/4dS3Wd
-	float noise (in vec2 st) {
-	    vec2 i = floor(st);
-	    vec2 f = fract(st);
-
-	    // Four corners in 2D of a tile
-	    float a = random(i);
-	    float b = random(i + vec2(1.0, 0.0));
-	    float c = random(i + vec2(0.0, 1.0));
-	    float d = random(i + vec2(1.0, 1.0));
-
-	    vec2 u = f * f * (3.0 - 2.0 * f);
-
-	    return mix(a, b, u.x) + 
-	            (c - a)* u.y * (1.0 - u.x) + 
-	            (d - b) * u.x * u.y;
-	}
-
-	#define OCTAVES 6
-	float fbm ( vec2 st) {
-	    // Initial values
-	    float value = 0.;
-	    float amplitud = .5;
-	    float frequency = 0.;
-	    //
-	    // Loop of octaves
-	    for (int i = 0; i < OCTAVES; i++) {
-	        value += amplitud * noise(st);
-	        st *= 2.1;
-	        amplitud *= .6;
-	    }
-	    return value;
-	}
-
-	// float pattern( in vec2 p ){
-	// 	vec2 domainModifier = vec2( fbm(p + vec2(0.0, 0.0)), fbm(p + vec2(5.2, 1.3)) ); //using fbm, modify the domain (p)
-	// 	return fbm(p + 4.0*domainModifier);
-	// }
-
-	// float pattern( vec2 p ){
-	// 	vec2 domainModifier = vec2( fbm(p + vec2(0.0, 0.0)), fbm(p + vec2(5.2, 1.3)) ); //modify domain of the domainmodifier...
-	// 	vec2 domainModifier2 = vec2( fbm(p + 4.0*domainModifier + vec2(1.7, 9.2)), fbm(p + 4.0*domainModifier + vec2(8.3, 2.8)));
-	// 	return fbm(p + 4.0*domainModifier2);
-	// }
-
-	float pattern( in vec2 p )
-	  {
-	      vec2 q = vec2( fbm( p + vec2(0.0,0.0) ),
-	                     fbm( p + vec2(5.2,1.3) ) );
-
-	      vec2 r = vec2( fbm( p + 4.0*q + vec2(1.7,9.2) ),
-	                     fbm( p + 4.0*q + vec2(8.3,2.8) ) );
-
-	      return fbm( p + 4.0*r );
-	  }
 
 	void main(){
-		vUv = uv + time;
 		pos = position;
 
-		float n = pattern(pos.xy);
-
-		gl_Position = projectionMatrix * modelViewMatrix * vec4(position + normal*n*.035, 1.);
+		gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.);
 	}
 </script>
 
 <script type="fsh" id="fragmentShader">
-	uniform sampler2D texture;
 
-	varying vec2 vUv;
 	varying vec3 pos;
 
-	float random (in vec2 st) { 
-	    return fract(sin(dot(st.xy,
-	                         vec2(12.9898,78.233)))* 
-	        43758.5453123);
-	}
+	float map( in vec3 p, out vec4 resColor){
+	    vec3 w = p;
+	    float m = dot(w,w);
 
-	// Based on Morgan McGuire @morgan3d
-	// https://www.shadertoy.com/view/4dS3Wd
-	float noise (in vec2 st) {
-	    vec2 i = floor(st);
-	    vec2 f = fract(st);
+	    vec4 trap = vec4(abs(w),m);
+		float dz = 1.0;
+	    
+	    
+		for( int i=0; i<4; i++ )
+	    {
+	#if 1
+	        float m2 = m*m;
+	        float m4 = m2*m2;
+			dz = 8.0*sqrt(m4*m2*m)*dz + 1.0;
 
-	    // Four corners in 2D of a tile
-	    float a = random(i);
-	    float b = random(i + vec2(1.0, 0.0));
-	    float c = random(i + vec2(0.0, 1.0));
-	    float d = random(i + vec2(1.0, 1.0));
+	        float x = w.x; float x2 = x*x; float x4 = x2*x2;
+	        float y = w.y; float y2 = y*y; float y4 = y2*y2;
+	        float z = w.z; float z2 = z*z; float z4 = z2*z2;
 
-	    vec2 u = f * f * (3.0 - 2.0 * f);
+	        float k3 = x2 + z2;
+	        float k2 = inversesqrt( k3*k3*k3*k3*k3*k3*k3 );
+	        float k1 = x4 + y4 + z4 - 6.0*y2*z2 - 6.0*x2*y2 + 2.0*z2*x2;
+	        float k4 = x2 - y2 + z2;
 
-	    return mix(a, b, u.x) + 
-	            (c - a)* u.y * (1.0 - u.x) + 
-	            (d - b) * u.x * u.y;
-	}
+	        w.x = p.x +  64.0*x*y*z*(x2-z2)*k4*(x4-6.0*x2*z2+z4)*k1*k2;
+	        w.y = p.y + -16.0*y2*k3*k4*k4 + k1*k1;
+	        w.z = p.z +  -8.0*y*k4*(x4*x4 - 28.0*x4*x2*z2 + 70.0*x4*z4 - 28.0*x2*z2*z4 + z4*z4)*k1*k2;
+	#else
+			dz = 8.0*pow(m,3.5)*dz + 1.0;
+	        
+	        float r = length(w);
+	        float b = 8.0*acos( clamp(w.y/r, -1.0, 1.0));
+	        float a = 8.0*atan( w.x, w.z );
+	        w = p + pow(r,8.0) * vec3( sin(b)*sin(a), cos(b), sin(b)*cos(a) );
+	#endif        
+	        
+	        trap = min( trap, vec4(abs(w),m) );
 
-	#define OCTAVES 6
-	float fbm ( vec2 st) {
-	    // Initial values
-	    float value = 0.;
-	    float amplitud = .5;
-	    float frequency = 0.;
-	    //
-	    // Loop of octaves
-	    for (int i = 0; i < OCTAVES; i++) {
-	        value += amplitud * noise(st);
-	        st *= 2.1;
-	        amplitud *= .6;
+	        m = dot(w,w);
+			if( m > 4.0 )
+	            break;
 	    }
-	    return value;
+	    trap.x = m;
+	    resColor = trap;
+
+	    return 0.25*log(m)*sqrt(m)/dz;
 	}
-
-	// float pattern( in vec2 p ){
-	// 	vec2 domainModifier = vec2( fbm(p + vec2(0.0, 0.0)), fbm(p + vec2(5.2, 1.3)) ); //using fbm, modify the domain (p)
-	// 	return fbm(p + 4.0*domainModifier);
-	// }
-
-	// float pattern( vec2 p ){
-	// 	vec2 domainModifier = vec2( fbm(p + vec2(0.0, 0.0)), fbm(p + vec2(5.2, 1.3)) ); //modify domain of the domainmodifier...
-	// 	vec2 domainModifier2 = vec2( fbm(p + 4.0*domainModifier + vec2(1.7, 9.2)), fbm(p + 4.0*domainModifier + vec2(8.3, 2.8)));
-	// 	return fbm(p + 4.0*domainModifier2);
-	// }
-
-	float pattern( in vec2 p )
-	  {
-	      vec2 q = vec2( fbm( p + vec2(0.0,0.0) ),
-	                     fbm( p + vec2(5.2,1.3) ) );
-
-	      vec2 r = vec2( fbm( p + 4.0*q + vec2(1.7,9.2) ),
-	                     fbm( p + 4.0*q + vec2(8.3,2.8) ) );
-
-	      return fbm( p + 4.0*r );
-	  }
 
 	void main(){
-		vec2 q; 
-		vec2 r;
-		vec2 j = vec2(0., 1.);
-		float p = pattern(pos.xy);
-
-		vec4 color = texture2D(texture, vUv + p);
-
-		gl_FragColor = vec4(p, p, p, 1.);
+		vec4 color = vec4(0.);
+		float m = map(pos, color);
+		gl_FragColor = vec4(m);
 	}
-
 </script>
 
 <script src="bower_components/three.js/build/three.js"></script>
