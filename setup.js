@@ -48,7 +48,15 @@ function init() {
 		var planeGeom = new THREE.PlaneGeometry(SCREEN_WIDTH, SCREEN_HEIGHT);
 		var planeMat = new THREE.ShaderMaterial({
 			vertexShader : document.getElementById('vertexShader').textContent,
-			fragmentShader : document.getElementById('fragmentShader').textContent
+			fragmentShader : document.getElementById('fragmentShader').textContent,
+			uniforms : {
+				time: { type: "f", value: 1.0 },
+				resolution: { type: "v2", value: new THREE.Vector2() },
+				utime : { type : "f", value : 0. },
+				qtime : { type : "f", value : 0. },
+				an : { type : "f", value : 0. },
+				speed : { value : 1.0 }
+			}
 		});
 
 		plane = new THREE.Mesh(planeGeom, planeMat);
@@ -59,6 +67,12 @@ function init() {
 
 	function update(){
 		controls.update();
+
+		plane.material.uniforms.time.value += .0005;
+		var time = plane.material.uniforms.time.value;
+		plane.material.uniforms.qtime.value = Math.sin(time) * .4;
+		plane.material.uniforms.utime.value = time/2;
+		plane.material.uniforms.an.value = Math.sin(time)*3.14157;
 	}
 
 	function animate(){
