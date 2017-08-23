@@ -84,7 +84,7 @@
 		return 0.5*log(r)*r/dr;
 	}
 	
-		float rm(vec3 origin, vec3 ray) {
+	float rm(vec3 origin, vec3 ray) {
 		float distance_marched = min_distance;
 
 			for (int i=0; i<150; i++) {		
@@ -99,9 +99,9 @@
 													 }
 									  }		
 		return -1.0;
-		}
+	}
 
-		vec3 render(vec2 q) {
+	vec3 render(vec2 q) {
 		vec3 eye = vec3(0.0,.2, -3.0 + qtime/ 2.0 );
 		vec3 screen = vec3(q,1.0);
 		vec3 ray = normalize(screen - eye);
@@ -124,18 +124,18 @@
 								  }
 
 		return col;
-		}
-	
-		void main() {
-			float qtime = sin (time)*.4;
+	}
 
-			vec2 q =  (vUv.xy*4.0)-2.0 ;
+	void main() {
+		float qtime = sin (time)*.4;
 
-			vec3 col = render(q);
-			q.x=col.x;
-			q.y=col.y;	
-			gl_FragColor = vec4(col,1.0); 	
-		}
+		vec2 q =  (vUv.xy*4.0)-2.0 ;
+
+		vec3 col = render(q);
+		q.x=col.x;
+		q.y=col.y;	
+		gl_FragColor = vec4(col,1.0); 	
+	}
 </script>
 
 <script src="bower_components/three.js/build/three.js"></script>
