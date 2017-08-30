@@ -9,7 +9,7 @@ var time; var startTime = new Date().getTime();
 var plane, box, heart;
 var NUM_ACROSS = 5;
 var NUM_DOWN = 5;
-var NUM_MATS = 8;
+var NUM_MATS = 9;
 var hearts = [];
 
 function resize(){
@@ -59,7 +59,7 @@ function init() {
 
 		scene.add(ambientLight);
 		scene.add(directionalLight);
-		scene.add(pointLight);
+		// scene.add(pointLight);
 
 		var boxGeom = new THREE.OpenBoxBufferGeometry(width, height, depth, 64, 64, 64);
 		var mat = new THREE.MeshPhongMaterial({ 

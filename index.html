@@ -384,7 +384,8 @@
 		float r = (sin(rand(delta))+1.)/2.;
 		float g = (cos(rand(delta))+1.)/2.;
 		float b = (tan(rand(delta))+1.)/2.;
-		gl_FragColor = vec4(1., 1., 0., smoothstep(0., 1., sin(delta)));
+		// gl_FragColor = vec4(1., 1., 0., smoothstep(0., 1., sin(delta)));
+		gl_FragColor = vec4(1., 1., 0., 1.);
 		// float c = step(0.,sin(time));
 		// gl_FragColor = vec4(c);
 	}
@@ -452,7 +453,16 @@
 	}
 </script>
 
+<script type="fsh" id="videoFragment">
+	uniform sampler2D tVideo;
 
+	varying vec2 vUv;
+
+	void main() {
+		vec4 color = texture2D(tVideo, vec2(vUv.x, vUv.y));
+		gl_FragColor = vec4(color.rgb, 1.);
+	}
+</script>
 
 <script src="bower_components/three.js/build/three.js"></script>
 <script src="bower_components/three.js/examples/js/controls/TrackballControls.js"></script>

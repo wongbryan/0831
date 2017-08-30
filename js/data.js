@@ -33,7 +33,8 @@ const TEXTURE_LIB = {
 	china : loadTexture('assets/textures/chin.jpg', true),
 	perlin : loadTexture('assets/textures/rgb texture.png', false),
 	ocean : loadTexture('assets/textures/ocean.jpg', false),
-	me : loadTexture('assets/textures/me.jpg', true)
+	me : loadTexture('assets/textures/me.jpg', true),
+	heightmap : loadTexture('assets/textures/height-map.jpg', false)
 };
 
 const SHADER_LIB = {
@@ -157,5 +158,28 @@ const MATERIALS_LIB = {
 
 	technicolor : new THREE.ShaderMaterial(SHADER_LIB['technicolor']),
 
-	glitch : new THREE.ShaderMaterial(SHADER_LIB['glitch'])
+	glitch : new THREE.ShaderMaterial(SHADER_LIB['glitch']),
+
+	video : (function(){
+		var video = document.createElement('video');
+		video.src = 'assets/video.mp4';
+		video.loop = true;
+		video.play();
+
+		var texture = new THREE.VideoTexture(video);
+		texture.flipY = false;
+		texture.minFilter = THREE.LinearFilter;
+		texture.magFilter = THREE.LinearFilter;
+		texture.format = THREE.RGBFormat;
+
+		var mat = new THREE.ShaderMaterial({
+			uniforms : {
+				tVideo : { value : texture }
+			},
+			vertexShader : document.getElementById('genericVertex').textContent,
+			fragmentShader : document.getElementById('videoFragment').textContent
+		});
+
+		return mat;
+	})()
 }
