@@ -9,7 +9,7 @@ var time; var startTime = new Date().getTime();
 var plane, box, heart;
 var NUM_ACROSS = 5;
 var NUM_DOWN = 5;
-var NUM_SHADERS = 2;
+var NUM_MATS = 8;
 var hearts = [];
 
 function resize(){
@@ -54,9 +54,12 @@ function init() {
 		directionalLight.position.set(0, height, 0);
 		directionalLight.castShadow = true;
 		var ambientLight = new THREE.AmbientLight(0x404040);
+		var pointLight = new THREE.PointLight(0xff0000, 1, 0);
+		pointLight.position.set(0, 25, 10);
 
 		scene.add(ambientLight);
 		scene.add(directionalLight);
+		scene.add(pointLight);
 
 		var boxGeom = new THREE.OpenBoxBufferGeometry(width, height, depth, 64, 64, 64);
 		var mat = new THREE.MeshPhongMaterial({ 
@@ -113,10 +116,6 @@ function init() {
 			}
 		);
 
-		var mat = new THREE.ShaderMaterial(SHADER_LIB['lavalamp']);
-		heart = new Heart(mat, 0, 0, 0);
-
-		// scene.add(heart.mesh);
 		window.addEventListener('resize', resize);
 	}
 
@@ -129,6 +128,10 @@ function init() {
 		SHADER_LIB['marbling'].uniforms['time'].value += delta;
 		SHADER_LIB['wormhole'].uniforms['time'].value += delta;
 		SHADER_LIB['tendrils'].uniforms['time'].value += delta;
+		SHADER_LIB['kaleido'].uniforms['angle'].value += delta;
+		SHADER_LIB['kaleido'].uniforms['time'].value += delta;
+		SHADER_LIB['technicolor'].uniforms['time'].value += delta;
+		SHADER_LIB['glitch'].uniforms['time'].value += delta;
 	}
 
 	function animate(){

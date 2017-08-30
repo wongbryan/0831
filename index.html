@@ -322,13 +322,133 @@
 
 <script type="fsh" id="refractionFragment">
 	uniform sampler2D texture;
+	uniform float time;
 
 	varying vec3 vNormal;
 	varying vec2 vUv;
 
+	// vec4 getNoise( vec2 uv ) {
+	// 	vec2 uv0 = ( uv / 103.0 ) + vec2(time / 17.0, time / 29.0);
+	// 	vec2 uv1 = uv / 107.0-vec2( time / -19.0, time / 31.0 );
+	// 	vec2 uv2 = uv / vec2( 8907.0, 9803.0 ) + vec2( time / 101.0, time / 97.0 );
+	// 	vec2 uv3 = uv / vec2( 1091.0, 1027.0 ) - vec2( time / 109.0, time / -113.0 );
+	// 	vec4 noise = texture2D( normalSampler, uv0 ) +
+	// 		texture2D( normalSampler, uv1 ) +
+	// 		texture2D( normalSampler, uv2 ) +
+	// 		texture2D( normalSampler, uv3 );
+	// 	return noise * 0.5 - 1.0;
+	// }
+
 	void main(){
-		vec4 color = texture2D(texture, vUv+vNormal.xy*5.);
+		vec2 uv0 = ( vUv / 103.0 ) + vec2(time / 17.0, time / 29.0);
+		vec2 uv1 = vUv / 107.0-vec2( time / -19.0, time / 31.0 );
+		vec2 uv2 = vUv / vec2( 8907.0, 9803.0 ) + vec2( time / 101.0, time / 97.0 );
+		vec2 uv3 = vUv / vec2( 1091.0, 1027.0 ) - vec2( time / 109.0, time / -113.0 );
+		vec4 color = texture2D(texture, vUv+((vNormal.xy+vec2(1.))/2.));
 		gl_FragColor = vec4(color.rgb, 1.);
+	}
+</script>
+
+<script type="fsh" id="kaleidoFragment">
+	uniform sampler2D texture;
+	uniform float sides;
+	uniform float angle;
+	uniform float time;
+	uniform float speed;
+
+	varying vec2 vUv;
+
+	void main() {
+
+		vec2 p = vUv - 0.5;
+		float r = length(p);
+		float a = atan(p.y, p.x) + angle/5.;
+		float tau = 2. * 3.1416 ;
+		a = mod(a, tau/sides);
+		a = abs(a - tau/sides/2.) ;
+		p = r * vec2(cos(a), sin(a));
+		vec4 color = texture2D(texture, p + 0.5 + time * speed);
+		gl_FragColor = color;
+
+	}
+</script>
+
+<script type="fsh" id="technicolorFragment">
+	uniform float time;
+	uniform float speed;
+
+	float rand(float n){return fract(sin(n) * 43758.5453123);}
+
+	void main() {
+		float delta = time*speed;
+		float r = (sin(rand(delta))+1.)/2.;
+		float g = (cos(rand(delta))+1.)/2.;
+		float b = (tan(rand(delta))+1.)/2.;
+		gl_FragColor = vec4(1., 1., 0., smoothstep(0., 1., sin(delta)));
+		// float c = step(0.,sin(time));
+		// gl_FragColor = vec4(c);
+	}
+</script>
+
+<script type="fsh" id="glitchFragment">
+	uniform sampler2D tDiffuse;
+	uniform sampler2D tDisp;
+	uniform float amount;
+	uniform float angle;
+	uniform float seed;
+	// uniform float seed_x;
+	// uniform float seed_y;
+	// uniform float distortion_x;
+	// uniform float distortion_y;
+	uniform float col_s;
+	uniform float time;
+	uniform float speed;
+	varying vec2 vUv;
+
+	float rand(vec2 co){
+		return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
+	}
+
+	void main() {
+		float distortion_x = sin(time*speed);
+		float distortion_y = sin(time*speed);
+
+		float seed = tan(time*speed);
+		float seed_x = cos(time*speed);
+		float seed_y = sin(time*speed);
+
+		vec2 p = vUv;
+		float xs = floor(gl_FragCoord.x / 0.5);
+		float ys = floor(gl_FragCoord.y / 0.5);
+		vec4 normal = texture2D (tDisp, p*seed*seed);
+
+		if(p.y<distortion_x+col_s && p.y>distortion_x-col_s*seed) {
+			if(seed_x>0.){
+				p.y = 1. - (p.y + distortion_y);
+			}
+			else {
+				p.y = distortion_y;
+			}
+		}
+		if(p.x<distortion_y+col_s && p.x>distortion_y-col_s*seed) {
+			if(seed_y>0.){
+				p.x=distortion_x;
+			}
+			else {
+				p.x = 1. - (p.x + distortion_x);
+			}
+		}
+		p.x+=normal.x*seed_x*(seed/5.);
+		p.y+=normal.y*seed_y*(seed/5.);
+		
+		vec2 offset = amount * vec2( cos(angle), sin(angle));
+		vec4 cr = texture2D(tDiffuse, p + offset);
+		vec4 cga = texture2D(tDiffuse, p);
+		vec4 cb = texture2D(tDiffuse, p - offset);
+		gl_FragColor = vec4(cr.r, cga.g, cb.b, cga.a);
+
+		vec4 snow = 200.*amount*vec4(rand(vec2(xs * seed,ys * seed*50.))*0.2);
+		gl_FragColor = gl_FragColor+ snow;
 	}
 </script>
 

@@ -5,12 +5,12 @@ function initHearts(geom){
 
 	for (var i=0; i<NUM_DOWN; i++){
 		for (var j=0; j<NUM_ACROSS; j++){
+			if (counter == NUM_MATS)
+				return;
 			var points = false;
-			var shader = SHADER_LIB[Object.keys(SHADER_LIB)[counter]];
-			var mat = new THREE.ShaderMaterial(shader);
-			console.log(mat.uniforms['points']);
-			if (mat.uniforms['pointSize'] !== undefined)
-				points = true;
+			var mat = MATERIALS_LIB[Object.keys(MATERIALS_LIB)[counter]];
+			// if (mat.uniforms['pointSize'] !== undefined)
+			// 	points = true;
 			var x = (j-NUM_ACROSS/2) * NODE_WIDTH, y = -(i-NUM_DOWN/2)* NODE_HEIGHT, z = 0;
 			var heart = new Heart(geom, mat, points, x, y, z);
 			hearts.push(heart);
