@@ -4,7 +4,7 @@ var HEIGHT = window.innerHeight;
 var camera, scene, renderer, controls, gui;
 var angle = 0;
 var clock = new THREE.Clock();
-var time; var startTime = new Date().getTime();
+var raycaster = new THREE.Raycaster(), mouse = new THREE.Vector2;
 
 var plane, box, heart;
 var NUM_ACROSS = 5;
@@ -12,7 +12,32 @@ var NUM_DOWN = 5;
 var NUM_MATS = 20;
 var hearts = [];
 
-const MAX_VERTICES = 200000;
+function onMouseDown(){
+	mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+	mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+	raycaster.setFromCamera(mouse, camera);
+
+	var intersects = raycaster.intersectObjects(hearts, true);
+
+	if (intersects.length > 0){
+		for (var i=0; i<intersects.length; i++){
+			var object = intersects[i].object;
+
+			var direction = Math.random() > .5 ? 1 : -1;
+			var cur = object.rotation;
+			var target = new THREE.Vector3(Math.PI, 8*direction*Math.PI, 0.);
+			var tween = new TWEEN.Tween(cur).to(target, 2250);
+			tween.easing(TWEEN.Easing.Quartic.InOut);
+			tween.onComplete(function(){
+				ui.replaceQuote(QUOTES[object.materialID]);
+				ui.show();
+			});
+
+			tween.start();
+		}
+	}
+	
+}
 
 function resize(){
 	camera.aspect = window.innerWidth / window.innerHeight;
@@ -102,6 +127,14 @@ function init() {
 		);
 
 		window.addEventListener('resize', resize);
+		window.addEventListener('mousedown', onMouseDown);
+
+		THREE.DefaultLoadingManager.onLoad = function ( ) {
+
+			var title = document.getElementById('title');
+			title.classList.add('hide');
+
+		};
 	}
 
 	function morph(){
@@ -130,6 +163,8 @@ function init() {
 		SHADER_LIB['fbm'].uniforms['time'].value += delta;
 		SHADER_LIB['kaleido2'].uniforms['time'].value += delta;
 		SHADER_LIB['oatmeal'].uniforms['time'].value += delta;
+
+		TWEEN.update();
 	}
 
 	function animate(){

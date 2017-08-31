@@ -1,0 +1,159 @@
+.hide {
+  animation: hide 1s forwards; }
+
+.show {
+  animation: show 1s forwards; }
+
+@keyframes hide {
+  0% {
+    visibility: visible;
+    opacity: 1; }
+  99% {
+    visibility: visible;
+    opacity: 0; }
+  100% {
+    visibility: hidden;
+    opacity: 0; } }
+@keyframes show {
+  0% {
+    visibility: hidden;
+    opacity: 0; }
+  100% {
+    visibility: visible;
+    opacity: 1; } }
+#title {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  z-index: 2000;
+  background-color: #ffffff; }
+  #title .wrapper {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%); }
+  #title #hearts {
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 35vw;
+    margin-bottom: -10px; }
+  #title .heart {
+    width: 100%;
+    animation: wiggle 3s infinite; }
+@keyframes wiggle {
+  0% {
+    transform: rotate(0deg) scaleX(1) scaleY(1); }
+  25% {
+    transform: rotate(45deg) scaleX(1.5) scaleY(1.5); }
+  40% {
+    transform: rotate(-37deg) scaleX(1) scaleY(1); }
+  50% {
+    transform: rotate(0) scaleX(1) scaleY(1); }
+  100% {
+    transform: rotate(0) scaleX(1) scaleY(1); } }
+  #title .heart-1 {
+    animation-delay: 0.85s; }
+  #title .heart-2 {
+    animation-delay: 1.7s; }
+  #title .heart-3 {
+    animation-delay: 2.55s; }
+  #title h1 {
+    text-align: center;
+    font-family: "Circular Std Black";
+    font-size: 32px;
+    color: #505050; }
+  #title #redBox {
+    clip-path: url(#heartsClip);
+    -webkit-clip-path: url(#heartsClip);
+    -moz-clip-path: url(#heatsClip);
+    margin: auto;
+    height: 5vh;
+    width: 100vw;
+    background-color: red; }
+  #title .description h2 {
+    text-align: center;
+    font-family: "Proxima Nova Alt Rg";
+    font-weight: normal;
+    font-size: 1.25em;
+    color: #505050;
+    margin-bottom: -11px; }
+
+#ui {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1000;
+  background-color: #ffffff; }
+
+#quote {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  margin: auto;
+  text-align: center; }
+  #quote h1 {
+    font-family: "Proxima Nova Alt Rg";
+    color: #000000;
+    margin-bottom: 30px; }
+  #quote #close {
+    cursor: pointer;
+    height: 25px;
+    width: 25px;
+    margin: auto;
+    font-family: "Proxima Nova Alt Rg"; }
+  #quote #close:hover .st0 {
+    fill: #ffff00; }
+
+/*LOADING BAR*/
+.radial-bar {
+  margin: 50px;
+  width: 80px;
+  height: 80px;
+  background-color: #cccccc;
+  border-radius: 50%; }
+
+.radial-bar__mask {
+  clip: rect(0px, 80px, 80px, 40px);
+  -webkit-backface-visibility: hidden;
+  transition: -webkit-transform 1s;
+  transition: -ms-transform 1s;
+  transition: transform 1s;
+  width: 80px;
+  height: 80px;
+  position: absolute;
+  border-radius: 50%; }
+
+.radial-bar__fill {
+  -webkit-backface-visibility: hidden;
+  transition: -webkit-transform 1s;
+  transition: -ms-transform 1s;
+  transition: transform 1s;
+  border-radius: 50%;
+  clip: rect(0px, 40px, 80px, 0px);
+  background-color: #669900;
+  width: 80px;
+  height: 80px;
+  position: absolute; }
+
+.radial-bar__inset {
+  width: 70px;
+  height: 70px;
+  position: absolute;
+  margin-left: 5px;
+  margin-top: 5px;
+  background-color: #fbfbfb;
+  border-radius: 50%;
+  display: table-cell; }
+
+.radial-bar__percent {
+  text-align: center;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #669900;
+  font-size: 22px; }
+
+/*# sourceMappingURL=style.css.map */

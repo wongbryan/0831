@@ -13,7 +13,8 @@ function initHearts(geom){
 			// 	points = true;
 			var x = (j-NUM_ACROSS/2) * NODE_WIDTH, y = -(i-NUM_DOWN/2)* NODE_HEIGHT, z = 0;
 			var heart = new Heart(geom, mat, points, x, y, z);
-			hearts.push(heart);
+			heart.mesh.materialID = Object.keys(MATERIALS_LIB)[counter];
+			hearts.push(heart.mesh);
 			scene.add(heart.mesh);
 
 			counter++;
@@ -36,5 +37,4 @@ var Heart = function(geometry, material, points, x, y, z){
 	mesh.rotation.x = Math.PI;
 
 	this.mesh = mesh;
-
 }
