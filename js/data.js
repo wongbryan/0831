@@ -50,7 +50,7 @@ const TEXTURE_LIB = {
 	rain : loadTexture('assets/textures/rain.jpg', false, false),
 	china : loadTexture('assets/textures/chin.jpg', false, true),
 	perlin : loadTexture('assets/textures/rgb texture.png', false, false),
-	ocean : loadTexture('assets/textures/ocean.jpg', false, false),
+	ocean : loadTexture('assets/textures/ocean.jpg', false, true),
 	me : loadTexture('assets/textures/me.jpg', false, true),
 	heightmap : loadTexture('assets/textures/height-map.jpg', false, false),
 	video : loadTexture('assets/video.mp4', true, false, )
@@ -214,7 +214,39 @@ const SHADER_LIB = {
 		},
 		vertexShader : document.getElementById('genericVertex').textContent,
 		fragmentShader : document.getElementById('cellsFragment').textContent
-	}
+	},
+
+	waves : {
+		uniforms : {
+			resolution : { value : new THREE.Vector2(window.innerWidth, window.innerHeight) },
+			time : { value : 0. },
+			speed : { value : .25 }
+		},
+		vertexShader : document.getElementById('genericVertex').textContent,
+		fragmentShader : document.getElementById('wavesFragment').textContent
+	},
+
+	fbm : {
+		uniforms : {
+			resolution : { value : new THREE.Vector2(window.innerWidth, window.innerHeight) },
+			time : { value : 0. },
+			speed : { value : .25 }
+		},
+		vertexShader : document.getElementById('genericVertex').textContent,
+		fragmentShader : document.getElementById('fbmFragment').textContent
+	},
+
+	kaleido2 : {
+		uniforms : {
+			texture : { value : TEXTURE_LIB['ocean'] },
+			sides : { value : 8 },
+			angle : { value : 2*Math.PI/3 },
+			time : { value : 0. },
+			speed : { value : .2 }
+		},
+		vertexShader : document.getElementById('genericVertex').textContent,
+		fragmentShader : document.getElementById('kaleidoFragment').textContent,
+	},
 };
 
 const MATERIALS_LIB = {
@@ -266,5 +298,11 @@ const MATERIALS_LIB = {
 
 	crystal : new THREE.ShaderMaterial(SHADER_LIB['crystal']),
 
-	cells : new THREE.ShaderMaterial(SHADER_LIB['cells'])
+	cells : new THREE.ShaderMaterial(SHADER_LIB['cells']),
+
+	waves : new THREE.ShaderMaterial(SHADER_LIB['waves']),
+
+	fbm : new THREE.ShaderMaterial(SHADER_LIB['fbm']),
+
+	kaleido2 : new THREE.ShaderMaterial(SHADER_LIB['kaleido2'])
 }

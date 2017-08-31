@@ -623,7 +623,7 @@
 	// better trabeculum ( compare to https://www.shadertoy.com/view/4dKSDV )
 	// relying on simplification ( cf https://www.shadertoy.com/view/llGGDw )
 	// of IQ's Voronoi distance https://www.shadertoy.com/view/ldl3W8
-	
+
 	uniform float time;
 	uniform vec2 resolution;
 	uniform float tNoise;
@@ -711,6 +711,122 @@
 	}
 </script>
 
+<script type="fsh" id="wavesFragment">
+	uniform vec2 resolution;
+	uniform float time;
+
+	void main() {
+		vec4 fragColor = vec4(0.);
+		vec2 uv = gl_FragCoord.xy / resolution.xy ;
+		fragColor = vec4(uv,0.5+0.5*sin(time/4.0),1.0)
+	      * sin(time/8.0)
+	      - cos(gl_FragCoord.x * time / 17.3 + time / 8.0)
+	      - sin(gl_FragCoord.y * time / 11.0 + time / 7.0)
+	      + sin(gl_FragCoord.x / 2910.0 * gl_FragCoord.y / 2230.0
+	        / ((sin(time/419.0
+	          + sin(gl_FragCoord.x*0.2 + gl_FragCoord.y*0.14))+1.0)/2.0/8.0
+	        )
+	        + time/78.0 * sin(time/200.1)
+	          * (1.0 + sin(time/473.0))*153.7
+	      ) * sin(gl_FragCoord.x / 3.0 + cos(time/4.0)*5.0)
+	      + cos(gl_FragCoord.y / 31.0
+	        + sin(time/8.0+sin(time/40.0))
+	        + sin(time*6.2+gl_FragCoord.x/(
+	          (1.0+sin(time/16.0))*50.0
+	        ))
+	        + sin(time*4.3+gl_FragCoord.y/(
+	          (1.0+sin(time/11.0))*23.0
+	        ))
+	      )
+	    ;
+
+	    gl_FragColor = fragColor;
+	}
+</script>
+
+<script type="fsh" id="fbmFragment">	
+	uniform vec2 resolution;
+	uniform float time;
+
+	//// COLORS ////
+	const vec3 ORANGE = vec3(1.0, 0.6, 0.2);
+	 
+	const vec3 BLUE   = vec3(0.2, 0.6, 0.6);
+	const vec3 BLACK  = vec3(0.1, 0.0, 0.1);
+
+	///// MATHS /////
+	const float PI = 3.14;
+
+	vec2 maplinear ( in vec2 x, in vec2 a1, in vec2 a2, in vec2 b1, in vec2 b2 ) {
+	    return b1 + (x - a1) * (b2 - b1) / (a2 - a1);
+	}
+
+	///// NOISE /////
+	float hash( float n ) {
+	    return fract(sin(n)*43758.5453123);   
+	}
+
+	float noise( in vec2 x ){
+	    vec2 p = floor(x);
+	    vec2 f = fract(x);
+	    f = f * f * (3.0 - 2.0 * f);
+	    float n = p.x + p.y * 57.0;
+	    return mix(mix( hash(n + 0.0), hash(n + 1.0), f.x), mix(hash(n + 57.0), hash(n + 58.0), f.x), f.y);
+	}
+
+	////// FBM ////// 
+	mat2 m = mat2( 0.6, 0.6, -0.6, 0.8);
+	float fbm(vec2 p){
+	 
+	    float f = 0.0;
+	    f += 0.5000 * noise(p); p *= m * 2.02;
+	    f += 0.2500 * noise(p); p *= m * 2.03;
+	    f += 0.1250 * noise(p); p *= m * 2.01;
+	    f += 0.0625 * noise(p); 
+	    f /= 0.9375;
+	    return f;
+	}
+
+	void main(){
+	    vec4 fragColor = vec4(0.);
+	    // pixel ratio  
+		vec2 uv = gl_FragCoord.xy / resolution.xy;  
+	    vec2 p = - 1. + 2. * uv;  
+	    p.x *= resolution.x / resolution.y ;
+	  	
+	    // 2 Fbm origins
+	    vec2  ctr  = vec2( 1.0, 0.0);
+	    vec2  ctr2 = vec2(-1.0, 0.0);  
+	    
+	    // MOUSE
+	    vec2 m = vec2(.5, .5);
+	        
+	    // domains
+	    float rad  = sqrt(dot(p, p)); 
+	    float r    = sqrt(dot(p + ctr, p + ctr)) + m.y; 
+	    float r2   = sqrt(dot(p + ctr2, p + ctr2))+ m.y;  
+	    float a = r * r2;
+	                    
+	    // distortions      
+	    a *= fbm(m.x * p);
+	    // with symmetry
+	    //a *= fbm(m.x * sqrt(p*p));
+	    a -= time * 0.3 ;
+
+	    // colorize
+	    vec3 col = BLACK;
+	    float f = smoothstep(0.1, 0.9, fbm(vec2(a * 20.0, r * r2)));  
+	    col =  mix( col, BLUE, f); 
+	    f = smoothstep(0.4, 0.9, fbm(vec2(a * 2.0 , r * r2)));  
+	    col =  mix( col, ORANGE, f );
+	    f = smoothstep(0.3, 0.9, fbm(vec2(a * 50.0, r * r2)));  
+	    col *=  1.8 - f ; 
+
+	    fragColor = vec4(col, 1.);
+
+	    gl_FragColor = fragColor;
+	}
+</script>
 <script src="bower_components/three.js/build/three.js"></script>
 <script src="bower_components/three.js/examples/js/controls/TrackballControls.js"></script>
 <script src="bower_components/three.js/examples/js/controls/FirstPersonControls.js"></script>
