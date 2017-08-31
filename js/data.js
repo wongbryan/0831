@@ -258,6 +258,14 @@ const SHADER_LIB = {
 		vertexShader : document.getElementById('genericVertex').textContent,
 		fragmentShader : document.getElementById('lavalampFragment').textContent
 	},
+
+	video2 : {
+		uniforms : {
+			tVideo : { value : TEXTURE_LIB['video'] }
+		},
+		vertexShader : document.getElementById('genericVertex').textContent,
+		fragmentShader : document.getElementById('videoFragment').textContent
+	}
 };
 
 const MATERIALS_LIB = {
@@ -317,5 +325,7 @@ const MATERIALS_LIB = {
 
 	kaleido2 : new THREE.ShaderMaterial(SHADER_LIB['kaleido2']),
 
-	oatmeal : new THREE.ShaderMaterial(SHADER_LIB['oatmeal'])
+	oatmeal : new THREE.ShaderMaterial(SHADER_LIB['oatmeal']),
+
+	video2 : new THREE.ShaderMaterial(SHADER_LIB['video2'])
 }

@@ -9,7 +9,7 @@ var time; var startTime = new Date().getTime();
 var plane, box, heart;
 var NUM_ACROSS = 5;
 var NUM_DOWN = 5;
-var NUM_MATS = 19;
+var NUM_MATS = 20;
 var hearts = [];
 
 const MAX_VERTICES = 200000;
@@ -62,6 +62,8 @@ function init() {
 		scene.add(ambientLight);
 		scene.add(directionalLight);
 		// scene.add(pointLight);
+
+		var HEART_GEOM = new THREE.BufferGeometry();
 
 		var loader = new THREE.JSONLoader();
 		loader.load(
