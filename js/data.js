@@ -9,6 +9,7 @@ function loadTexture(path, video, repeat){
 		var video = document.createElement('video');
 		video.src = path;
 		video.loop = true;
+		video.muted = true;
 		video.play();
 
 		texture = new THREE.VideoTexture(video);
@@ -53,8 +54,10 @@ const TEXTURE_LIB = {
 	ocean : loadTexture('assets/textures/ocean.jpg', false, true),
 	me : loadTexture('assets/textures/me.jpg', false, true),
 	heightmap : loadTexture('assets/textures/height-map.jpg', false, false),
-	video : loadTexture('assets/video.mp4', true, false, ),
-	oatmeal : loadTexture('assets/textures/oatmeal.jpg', false, false, )
+	kungfu : loadTexture('assets/kung-fu-hustle.mp4', true, false, ),
+	oatmeal : loadTexture('assets/textures/oatmeal.jpg', false, false, ),
+	haagen : loadTexture('assets/haagen-dasz.mp4', true, false, ),
+	norah : loadTexture('assets/norah.mp4', true, false, )
 };
 
 const SHADER_LIB = {
@@ -179,21 +182,18 @@ const SHADER_LIB = {
 
 	video : {
 		uniforms : {
-			tVideo : { value : TEXTURE_LIB['video'] }
+			tVideo : { value : TEXTURE_LIB['haagen'] }
 		},
 		vertexShader : document.getElementById('genericVertex').textContent,
 		fragmentShader : document.getElementById('videoFragment').textContent
 	},
 
-	sepia : {
+	video3 : {
 		uniforms : {
-			amount : { value : 5. },
-			tDiffuse : { value : TEXTURE_LIB['video'] },
-			time : { value : 0. },
-			speed : { value : .5 }
+			tVideo : { value : TEXTURE_LIB['norah'] },
 		},
 		vertexShader : document.getElementById('genericVertex').textContent,
-		fragmentShader : document.getElementById('sepiaFragment').textContent,
+		fragmentShader : document.getElementById('videoFragment').textContent,
 		transparent : true
 	},
 
@@ -261,7 +261,7 @@ const SHADER_LIB = {
 
 	video2 : {
 		uniforms : {
-			tVideo : { value : TEXTURE_LIB['video'] }
+			tVideo : { value : TEXTURE_LIB['kungfu'] }
 		},
 		vertexShader : document.getElementById('genericVertex').textContent,
 		fragmentShader : document.getElementById('videoFragment').textContent
@@ -313,7 +313,7 @@ const MATERIALS_LIB = {
 
 	rainbow : new THREE.ShaderMaterial(SHADER_LIB['rainbow']),
 
-	sepia : new THREE.ShaderMaterial(SHADER_LIB['sepia']),
+	video3 : new THREE.ShaderMaterial(SHADER_LIB['video3']),
 
 	crystal : new THREE.ShaderMaterial(SHADER_LIB['crystal']),
 

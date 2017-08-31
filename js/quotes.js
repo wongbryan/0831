@@ -15,17 +15,17 @@ const QUOTES = {
 
 	glitch : "FAMILY FIRST!",
 
-	video : "'CA law says if you are under 21 years of age, a container of alcohol is much more serious. An underage person with alcohol in the vehicle faces a misdemeanor criminal charge. If convicted, you could face: \n A fine of up to $1,000 \n Up to six months in jail. \n Please remove from trunk promptly.' \n *after finding a case of box wine in Bryan's car*",
+	gradient : "'CA law says if you are under 21 years of age, a container of alcohol is much more serious. An underage person with alcohol in the vehicle faces a misdemeanor criminal charge. If convicted, you could face: \n A fine of up to $1,000 \n Up to six months in jail. \n Please remove from trunk promptly.' \n *after finding a case of box wine in Bryan's car*",
 
-	gradient : "Proud owner of a white Jaguar F-Type.",
+	video2 : "KUNG FU HUSTLE!",
 
 	ring : "'It was on sale!'",
 
 	rainbow : "'God never put food on the table. I did.'",
 
-	sepia : "HAAGEN DAZ.",
+	video3 : "Always playing Nora Jones, 'You're So Vain' by Carly Simon and Chinese podcasts in the kitchen.",
 
-	crystal : "Always playing Nora Jones, 'You're So Vain' by Carly Simon and Chinese podcasts in the kitchen.",
+	crystal : "'I'm trying my best to keep my head above the water... I want you to remember how strong, how resilient your mother was.'",
 
 	cells : "2 eggs (over easy), toasted bread, black coffee and a glass (make sure it's a glass) of water.",
 
@@ -37,5 +37,5 @@ const QUOTES = {
 
 	oatmeal : "'When I'm old and senile, feed me oatmeal with raisins.'",
 
-	video2 : "'I'm trying my best to keep my head above the water... I want you to remember how strong, how resilient your mother was.'"
+	video : "HAAGEN DASZ."
 }

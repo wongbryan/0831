@@ -10,7 +10,11 @@ var plane, box, heart;
 var NUM_ACROSS = 5;
 var NUM_DOWN = 5;
 var NUM_MATS = 20;
+var GRID_WIDTH = 750;
+var GRID_HEIGHT = 600; // ):
 var hearts = [];
+
+var sound;
 
 function onMouseDown(){
 	mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
@@ -56,7 +60,22 @@ function init() {
 		container.appendChild( renderer.domElement );
 		
 		camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, .001, 10000 );
-		camera.position.set(0, 0, 75);
+		camera.position.set(0, 0, 400);
+
+		var listener = new THREE.AudioListener();
+		camera.add( listener );
+
+		// create a global audio source
+		sound = new THREE.Audio( listener );
+
+		var audioLoader = new THREE.AudioLoader();
+
+		//Load a sound and set it as the Audio object's buffer
+		audioLoader.load( 'assets/dont-know-why.mp3', function( buffer ) {
+			sound.setBuffer( buffer );
+			sound.setLoop(true);
+			sound.play();
+		});
 
 		// camera = new THREE.OrthographicCamera( WIDTH / - 2, WIDTH / 2, HEIGHT / 2, HEIGHT / - 2, -1000, 1000 );
 
@@ -64,6 +83,7 @@ function init() {
 		controls.zoomSpeed = 1.0;
 
 		// controls = new THREE.FirstPersonControls(camera, renderer.domElement)
+		// controls.lookSpeed = .05;
 
 		// controls = new THREE.OrthographicTrackballControls(camera, renderer.domElement);
 
