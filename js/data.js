@@ -3,10 +3,28 @@ var clock = new THREE.Clock();
 
 /* LIBRARIES */
 
-function loadTexture(path, repeat){
-	var texture = loader.load(path);
+function loadTexture(path, video, repeat){
+	var texture;
+	if (video){
+		var video = document.createElement('video');
+		video.src = path;
+		video.loop = true;
+		video.play();
+
+		texture = new THREE.VideoTexture(video);
+		texture.flipY = false;
+		texture.minFilter = THREE.LinearFilter;
+		texture.magFilter = THREE.LinearFilter;
+		texture.format = THREE.RGBFormat;
+	}
+
+	else{
+		texture = loader.load(path);
+	}
+
 	if(repeat)
 		texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+
 	return texture;
 }
 
@@ -29,12 +47,13 @@ function generateHeightMap(dt_size){
 }
 
 const TEXTURE_LIB = {
-	rain : loadTexture('assets/textures/rain.jpg', false),
-	china : loadTexture('assets/textures/chin.jpg', true),
-	perlin : loadTexture('assets/textures/rgb texture.png', false),
-	ocean : loadTexture('assets/textures/ocean.jpg', false),
-	me : loadTexture('assets/textures/me.jpg', true),
-	heightmap : loadTexture('assets/textures/height-map.jpg', false)
+	rain : loadTexture('assets/textures/rain.jpg', false, false),
+	china : loadTexture('assets/textures/chin.jpg', false, true),
+	perlin : loadTexture('assets/textures/rgb texture.png', false, false),
+	ocean : loadTexture('assets/textures/ocean.jpg', false, false),
+	me : loadTexture('assets/textures/me.jpg', false, true),
+	heightmap : loadTexture('assets/textures/height-map.jpg', false, false),
+	video : loadTexture('assets/video.mp4', true, false, )
 };
 
 const SHADER_LIB = {
@@ -120,6 +139,81 @@ const SHADER_LIB = {
 		},
 		vertexShader : document.getElementById('genericVertex').textContent,
 		fragmentShader : document.getElementById('glitchFragment').textContent,
+	},
+
+	gradient : {
+		uniforms : {
+			colorA : { value : new THREE.Color(0xff0000) },
+			colorB : { value : new THREE.Color(0xffff00) },
+			resolution : { value : new THREE.Vector2(window.innerWidth, window.innerHeight) },
+			time : { value : 0. },
+			speed : { value : .5 }
+		},
+		vertexShader : document.getElementById('genericVertex').textContent,
+		fragmentShader : document.getElementById('gradientFragment').textContent,
+		transparent : true
+	},
+
+	ring : {
+		uniforms : {
+			resolution : { value : new THREE.Vector2(window.innerWidth, window.innerHeight) },
+			time : { value : 0. },
+			speed : { value : .5 }
+		},
+		vertexShader : document.getElementById('genericVertex').textContent,
+		fragmentShader : document.getElementById('ringFragment').textContent,
+		transparent : true
+	},
+
+	rainbow : {
+		uniforms : {
+			resolution : { value : new THREE.Vector2(window.innerWidth, window.innerHeight) },
+			time : { value : 0. },
+			speed : { value : .5 }
+		},
+		vertexShader : document.getElementById('genericVertex').textContent,
+		fragmentShader : document.getElementById('rainbowFragment').textContent,
+		transparent : true
+	},
+
+	video : {
+		uniforms : {
+			tVideo : { value : TEXTURE_LIB['video'] }
+		},
+		vertexShader : document.getElementById('genericVertex').textContent,
+		fragmentShader : document.getElementById('videoFragment').textContent
+	},
+
+	sepia : {
+		uniforms : {
+			amount : { value : 5. },
+			tDiffuse : { value : TEXTURE_LIB['video'] },
+			time : { value : 0. },
+			speed : { value : .5 }
+		},
+		vertexShader : document.getElementById('genericVertex').textContent,
+		fragmentShader : document.getElementById('sepiaFragment').textContent,
+		transparent : true
+	},
+
+	crystal : {
+		uniforms : {
+			resolution : { value : new THREE.Vector2(window.innerWidth, window.innerHeight) },
+			time : { value : 0. },
+			speed : { value : .25 }
+		},
+		vertexShader : document.getElementById('genericVertex').textContent,
+		fragmentShader : document.getElementById('crystalFragment').textContent
+	},
+
+	cells : {
+		uniforms : {
+			resolution : { value : new THREE.Vector2(window.innerWidth, window.innerHeight) },
+			time : { value : 0. },
+			speed : { value : .25 }
+		},
+		vertexShader : document.getElementById('genericVertex').textContent,
+		fragmentShader : document.getElementById('cellsFragment').textContent
 	}
 };
 
@@ -160,26 +254,17 @@ const MATERIALS_LIB = {
 
 	glitch : new THREE.ShaderMaterial(SHADER_LIB['glitch']),
 
-	video : (function(){
-		var video = document.createElement('video');
-		video.src = 'assets/video.mp4';
-		video.loop = true;
-		video.play();
+	video : new THREE.ShaderMaterial(SHADER_LIB['video']),
 
-		var texture = new THREE.VideoTexture(video);
-		texture.flipY = false;
-		texture.minFilter = THREE.LinearFilter;
-		texture.magFilter = THREE.LinearFilter;
-		texture.format = THREE.RGBFormat;
+	gradient : new THREE.ShaderMaterial(SHADER_LIB['gradient']),
 
-		var mat = new THREE.ShaderMaterial({
-			uniforms : {
-				tVideo : { value : texture }
-			},
-			vertexShader : document.getElementById('genericVertex').textContent,
-			fragmentShader : document.getElementById('videoFragment').textContent
-		});
+	ring : new THREE.ShaderMaterial(SHADER_LIB['ring']),
 
-		return mat;
-	})()
+	rainbow : new THREE.ShaderMaterial(SHADER_LIB['rainbow']),
+
+	sepia : new THREE.ShaderMaterial(SHADER_LIB['sepia']),
+
+	crystal : new THREE.ShaderMaterial(SHADER_LIB['crystal']),
+
+	cells : new THREE.ShaderMaterial(SHADER_LIB['cells'])
 }

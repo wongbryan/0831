@@ -9,7 +9,7 @@ var time; var startTime = new Date().getTime();
 var plane, box, heart;
 var NUM_ACROSS = 5;
 var NUM_DOWN = 5;
-var NUM_MATS = 9;
+var NUM_MATS = 15;
 var hearts = [];
 
 function resize(){
@@ -132,6 +132,11 @@ function init() {
 		SHADER_LIB['kaleido'].uniforms['time'].value += delta;
 		SHADER_LIB['technicolor'].uniforms['time'].value += delta;
 		SHADER_LIB['glitch'].uniforms['time'].value += delta;
+		SHADER_LIB['gradient'].uniforms['time'].value += delta;
+		SHADER_LIB['ring'].uniforms['time'].value += delta;
+		SHADER_LIB['rainbow'].uniforms['time'].value += delta;
+		SHADER_LIB['crystal'].uniforms['time'].value += delta;
+		SHADER_LIB['cells'].uniforms['time'].value += delta;
 	}
 
 	function animate(){
