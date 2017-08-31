@@ -9,7 +9,7 @@ var time; var startTime = new Date().getTime();
 var plane, box, heart;
 var NUM_ACROSS = 5;
 var NUM_DOWN = 5;
-var NUM_MATS = 18;
+var NUM_MATS = 19;
 var hearts = [];
 
 function resize(){
@@ -140,6 +140,7 @@ function init() {
 		SHADER_LIB['waves'].uniforms['time'].value += delta;
 		SHADER_LIB['fbm'].uniforms['time'].value += delta;
 		SHADER_LIB['kaleido2'].uniforms['time'].value += delta;
+		SHADER_LIB['oatmeal'].uniforms['time'].value += delta;
 	}
 
 	function animate(){

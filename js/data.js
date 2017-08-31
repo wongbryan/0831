@@ -53,7 +53,8 @@ const TEXTURE_LIB = {
 	ocean : loadTexture('assets/textures/ocean.jpg', false, true),
 	me : loadTexture('assets/textures/me.jpg', false, true),
 	heightmap : loadTexture('assets/textures/height-map.jpg', false, false),
-	video : loadTexture('assets/video.mp4', true, false, )
+	video : loadTexture('assets/video.mp4', true, false, ),
+	oatmeal : loadTexture('assets/textures/oatmeal.jpg', false, false, )
 };
 
 const SHADER_LIB = {
@@ -94,7 +95,7 @@ const SHADER_LIB = {
 			texture : { value : TEXTURE_LIB['ocean'] }
 			// pointSize : { value : 3. }
 		},
-		vertexShader : document.getElementById('genericVertex').textContent,
+		vertexShader : document.getElementById('tendrilsVertex').textContent,
 		fragmentShader : document.getElementById('tendrilsFragment').textContent,
 		wireframe : true,
 		transparent : true,
@@ -247,6 +248,16 @@ const SHADER_LIB = {
 		vertexShader : document.getElementById('genericVertex').textContent,
 		fragmentShader : document.getElementById('kaleidoFragment').textContent,
 	},
+
+	oatmeal : {
+		uniforms : {
+			texture : { value : TEXTURE_LIB['oatmeal'] },
+			time : { value : 0. },
+			speed : { value : .05 }
+		},
+		vertexShader : document.getElementById('genericVertex').textContent,
+		fragmentShader : document.getElementById('lavalampFragment').textContent
+	},
 };
 
 const MATERIALS_LIB = {
@@ -304,5 +315,7 @@ const MATERIALS_LIB = {
 
 	fbm : new THREE.ShaderMaterial(SHADER_LIB['fbm']),
 
-	kaleido2 : new THREE.ShaderMaterial(SHADER_LIB['kaleido2'])
+	kaleido2 : new THREE.ShaderMaterial(SHADER_LIB['kaleido2']),
+
+	oatmeal : new THREE.ShaderMaterial(SHADER_LIB['oatmeal'])
 }
