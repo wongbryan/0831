@@ -301,7 +301,7 @@
 
 		gl_PointSize = pointSize;
 
-		gl_Position = projectionMatrix * modelViewMatrix * vec4(position + color2.rgb, 1.);
+		gl_Position = projectionMatrix * modelViewMatrix * vec4(position +2.*color2.rgb, 1.);
 	}
 </script>
 
@@ -331,8 +331,6 @@
 		gl_FragColor = vec4(color.rgb, 1.);
 	}
 </script>
-
-
 
 <script src="bower_components/three.js/build/three.js"></script>
 <script src="bower_components/three.js/examples/js/controls/TrackballControls.js"></script>

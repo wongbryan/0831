@@ -12,6 +12,8 @@ var NUM_DOWN = 5;
 var NUM_SHADERS = 2;
 var hearts = [];
 
+const MAX_VERTICES = 200000;
+
 function resize(){
 	camera.aspect = window.innerWidth / window.innerHeight;
 	camera.updateProjectionMatrix();
@@ -58,25 +60,6 @@ function init() {
 		scene.add(ambientLight);
 		scene.add(directionalLight);
 
-		var boxGeom = new THREE.OpenBoxBufferGeometry(width, height, depth, 64, 64, 64);
-		var mat = new THREE.MeshPhongMaterial({ 
-			color : 0x404040,
-			specular : 0xffffff,
-			transparent : true,
-			opacity: .2,
-			// side : THREE.DoubleSide
-		});
-		box = new THREE.Mesh(boxGeom, mat);
-
-		var planeGeom = new THREE.PlaneGeometry(width, depth, 64, 64);
-		// var planeMat = new THREE.MeshPhongMaterial({
-		// 	color : 0x000000,
-		// 	specular : 0xe1e1e1,
-		// 	side : THREE.DoubleSide
-		// });
-
-		var HEART_GEOM = new THREE.BufferGeometry();
-
 		var loader = new THREE.JSONLoader();
 		loader.load(
 			'assets/heart.json',
@@ -118,6 +101,10 @@ function init() {
 
 		// scene.add(heart.mesh);
 		window.addEventListener('resize', resize);
+	}
+
+	function morph(){
+		return;
 	}
 
 	function update(){
