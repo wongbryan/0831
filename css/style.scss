@@ -3,8 +3,8 @@ $Proxima-Nova : 'Proxima Nova Alt Rg';
 $class-slug: heart !default;
 $heartPath: heartPath;
 
-$white : #ffffff;
-$black : #121212;
+$white : #f4f8ff;
+$black : #161a21;
 $darkGray : #606060;
 
 @mixin absolute-center(){
@@ -20,6 +20,53 @@ $darkGray : #606060;
 
 .show{
 	animation: show 1s forwards;
+}
+
+#nav{
+	position: absolute;
+	top: 0;
+	left: 0;
+	margin: 2.5vh;
+	padding: 10px;
+	width: 20vh;
+
+	.flex-container{
+		display: -webkit-box;
+	    display: -moz-box;
+	    display: -ms-flexbox;
+	    display: -webkit-flex;
+	    display: flex;
+	    -webkit-flex-flow: row;
+	    justify-content: space-around;
+	}
+
+	.flex-item {
+	    background-color: $white;
+	    transition: all .6s;
+	    margin: 3.5px;
+	    color: white;
+	    flex: 1 0 auto;
+	    height:auto;
+	}
+
+	.current{
+		background-color: #f7faff;
+	}
+
+	.flex-item:before {
+	    content:'';
+	    float:left;
+	    padding-top:100%;
+	}
+}
+
+.flex-item:hover{
+	cursor: pointer;
+	background-color: #0071ba !important;
+}
+
+.active{
+	background-color: #0071ba !important;
 }
 
 @keyframes hide{
@@ -151,7 +198,7 @@ $darkGray : #606060;
 
 	#close:hover{
 		.st0{
-			fill: #ffff00;
+			fill: #0071ba;
 		}
 	}
 }

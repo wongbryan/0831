@@ -20,3 +20,33 @@ var closeButton = document.getElementById('close');
 closeButton.addEventListener('mousedown', function(){
 	ui.hide();
 });
+
+var nav = document.getElementById('nav');
+var boxes = nav.getElementsByClassName('flex-item');
+var activeBox = boxes[0];
+
+function initNav(){
+	for ( var i=0; i<HEARTS.length; i++){
+		(function(index){
+
+			var box = boxes[index];
+			console.log(HEARTS[index]);
+			box.addEventListener('mousedown', function(){
+
+				if (activeBox == box)
+					return;
+				else{
+					activeBox.classList.remove('active');
+					box.classList.add('active');
+					activeBox = box;
+				}
+
+				var pos = HEARTS[index].position;
+				var x = pos.x, y = pos.y;
+				controls.moveTo(x, y, 250, 2000);
+			});
+
+		})(i);
+	}
+}
+

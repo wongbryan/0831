@@ -7,6 +7,12 @@ var clock = new THREE.Clock();
 var raycaster = new THREE.Raycaster(), mouse = new THREE.Vector2;
 
 var plane, box, heart;
+var NUM_ACROSS = 5;
+var NUM_DOWN = 5;
+var NUM_MATS = 20;
+var GRID_WIDTH = 750;
+var GRID_HEIGHT = 600; // ):
+var hearts = [];
 
 var sound;
 
@@ -15,7 +21,7 @@ function onMouseDown(){
 	mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
 	raycaster.setFromCamera(mouse, camera);
 
-	var intersects = raycaster.intersectObjects(HEARTS, true);
+	var intersects = raycaster.intersectObjects(hearts, true);
 
 	if (intersects.length > 0){
 		for (var i=0; i<intersects.length; i++){
@@ -50,11 +56,11 @@ function init() {
 		renderer.shadowMap.type = THREE.PCSoftShadowMap;
 		renderer.setPixelRatio( window.devicePixelRatio );
 		renderer.setSize( window.innerWidth, window.innerHeight);
-		renderer.setClearColor(0xe8ecf7);
+		renderer.setClearColor(0xededed);
 		container.appendChild( renderer.domElement );
 		
 		camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, .001, 10000 );
-		camera.position.set(-300, 300, 250);
+		camera.position.set(0, 0, 400);
 
 		var listener = new THREE.AudioListener();
 		camera.add( listener );
@@ -139,7 +145,6 @@ function init() {
 				HEART_GEOM.computeBoundingBox();
 
 				initHearts(HEART_GEOM);
-				initNav();
 			}
 		);
 
@@ -162,6 +167,9 @@ function init() {
 		controls.update();
 		var delta = clock.getDelta();
 		// controls.update(delta);
+
+		var lookat = new THREE.Vector3(camera.position.x, camera.position.y, 0);
+		camera.lookAt(lookat);
 
 		SHADER_LIB['lavalamp'].uniforms['time'].value += delta;
 		SHADER_LIB['marbling'].uniforms['time'].value += delta;

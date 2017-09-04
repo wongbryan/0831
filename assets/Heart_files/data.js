@@ -1,15 +1,6 @@
 var loader = new THREE.TextureLoader();
 var clock = new THREE.Clock();
 
-var NODE_WIDTH = 150;
-var NODE_HEIGHT = 150;
-
-var NUM_ACROSS = 5;
-var NUM_DOWN = 4;
-var NUM_MATS = 20;
-var GRID_WIDTH = 750;
-var GRID_HEIGHT = 600; // ):
-
 /* LIBRARIES */
 
 function loadTexture(path, video, repeat){
@@ -338,12 +329,3 @@ const MATERIALS_LIB = {
 
 	video2 : new THREE.ShaderMaterial(SHADER_LIB['video2'])
 }
-
-const HEARTS = [];
-// for (var i=0; i<NUM_ACROSS; i++){
-// 	for (var j=0; j<NUM_DOWN; j++){
-// 		HEARTS[i] = [];
-// 	}
-// }
-
-const POSITIONS = [];

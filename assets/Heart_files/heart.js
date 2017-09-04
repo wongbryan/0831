@@ -1,8 +1,9 @@
 function initHearts(geom){
 	var counter = 0;
+	var NODE_WIDTH = 150;
+	var NODE_HEIGHT = 150;
 
 	for (var i=0; i<NUM_DOWN; i++){
-		// HEARTS[i] = [];
 		for (var j=0; j<NUM_ACROSS; j++){
 			if (counter == NUM_MATS)
 				return;
@@ -10,10 +11,10 @@ function initHearts(geom){
 			var mat = MATERIALS_LIB[Object.keys(MATERIALS_LIB)[counter]];
 			// if (mat.uniforms['pointSize'] !== undefined)
 			// 	points = true;
-			var x = (j-NUM_ACROSS/2) * NODE_WIDTH + 75, y = -(i-NUM_DOWN/2)* NODE_HEIGHT, z = 0;
+			var x = (j-NUM_ACROSS/2) * NODE_WIDTH + 75, y = -(i-NUM_DOWN/2)* NODE_HEIGHT + -75, z = 0;
 			var heart = new Heart(geom, mat, points, x, y, z);
 			heart.mesh.materialID = Object.keys(MATERIALS_LIB)[counter];
-			HEARTS.push(heart.mesh);
+			hearts.push(heart.mesh);
 			scene.add(heart.mesh);
 
 			counter++;
