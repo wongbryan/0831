@@ -189,14 +189,14 @@ $darkBlue : #0071ba;
 	text-align: center;
 	h1{
 		font-family: $Proxima-Nova;
+		font-size: 5vh;
 		color: $black;
 		margin-bottom: 30px;
 	}
 
 	#close{
 		cursor: pointer;
-		height: 25px;
-		width: 25px;
+		width: 5vh;
 		margin: auto;
 		// background-color: $black;
 		font-family: $Proxima-Nova;
