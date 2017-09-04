@@ -20,7 +20,7 @@
     -webkit-flex-flow: row;
     justify-content: space-around; }
   #nav .flex-item {
-    background-color: #f4f8ff;
+    background-color: #ffffff;
     transition: all .6s;
     margin: 3.5px;
     color: white;
@@ -102,7 +102,7 @@
     text-align: center;
     font-family: "Circular Std Black";
     font-size: 6vh;
-    color: #161a21;
+    color: #272a30;
     z-index: 2000; }
   #title #redBox {
     clip-path: url(#heartsClip);
@@ -116,16 +116,16 @@
     text-align: center;
     font-family: "Proxima Nova Alt Rg";
     font-weight: normal;
-    font-size: 1.25em;
+    font-size: 3vh;
     color: #161a21;
-    margin-bottom: -15px; }
+    margin-bottom: -2vh; }
 
 #ui {
   position: absolute;
   width: 100vw;
   height: 100vh;
   z-index: 1000;
-  background-color: #f4f8ff; }
+  background-color: #f9fbff; }
 
 #quote {
   position: absolute;

@@ -3,7 +3,7 @@ $Proxima-Nova : 'Proxima Nova Alt Rg';
 $class-slug: heart !default;
 $heartPath: heartPath;
 
-$white : #f4f8ff;
+$white : #f9fbff;
 $black : #161a21;
 $darkGray : #272a30;
 $lightBlue : #e8ecf7;
@@ -43,7 +43,7 @@ $darkBlue : #0071ba;
 	}
 
 	.flex-item {
-	    background-color: $white;
+	    background-color: #ffffff;
 	    transition: all .6s;
 	    margin: 3.5px;
 	    color: white;
@@ -149,7 +149,7 @@ $darkBlue : #0071ba;
 		text-align: center;
 		font-family: $Circular-black;
 		font-size: 6vh;
-		color: $black;
+		color: $darkGray;
 		z-index: 2000;
 	}
 
@@ -168,9 +168,9 @@ $darkBlue : #0071ba;
 			text-align: center;
 			font-family: $Proxima-Nova;
 			font-weight: normal;
-			font-size: 1.25em;
+			font-size: 3vh;
 			color: $black;
-			margin-bottom: -15px;
+			margin-bottom: -2vh;
 		}
 	}
 }
