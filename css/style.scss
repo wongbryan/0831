@@ -5,7 +5,9 @@ $heartPath: heartPath;
 
 $white : #f4f8ff;
 $black : #161a21;
-$darkGray : #606060;
+$darkGray : #272a30;
+$lightBlue : #e8ecf7;
+$darkBlue : #0071ba;
 
 @mixin absolute-center(){
 	position: absolute;
@@ -62,11 +64,11 @@ $darkGray : #606060;
 
 .flex-item:hover{
 	cursor: pointer;
-	background-color: #0071ba !important;
+	background-color: $darkBlue !important;
 }
 
 .active{
-	background-color: #0071ba !important;
+	background-color: $darkBlue !important;
 }
 
 @keyframes hide{
@@ -85,7 +87,7 @@ $darkGray : #606060;
 	width: 100vw;
 	height: 100vh;
 	z-index: 2000;
-	background-color: $white;
+	background-color: $lightBlue;
 
 	.wrapper{
 		@include absolute-center;
@@ -96,19 +98,22 @@ $darkGray : #606060;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		width: 40vw;
+		width: 60vh;
 		margin-bottom: -25px;
 	}
 
 	.heart{
+		img{
+			width: 100%;
+		}
 		margin: 15px;
-		width: 100%;
+		width: 30%;
 		animation: wiggle 3s infinite;
 	}
 
 	@keyframes wiggle{
 		0%{transform: rotate(0deg) scaleX(1) scaleY(1);}
-		25%{transform: rotate(45deg) scaleX(1.5) scaleY(1.5);}
+		25%{transform: rotate(45deg) scaleX(1.7) scaleY(1.7);}
 		40%{transform: rotate(-37deg) scaleX(1) scaleY(1);}
 		50%{transform: rotate(0) scaleX(1) scaleY(1);}
 		100%{transform: rotate(0) scaleX(1) scaleY(1);}
@@ -143,8 +148,9 @@ $darkGray : #606060;
 	h1{
 		text-align: center;
 		font-family: $Circular-black;
-		font-size: 32px;
-		color: $darkGray;
+		font-size: 6vh;
+		color: $black;
+		z-index: 2000;
 	}
 
 	#redBox{
@@ -163,7 +169,7 @@ $darkGray : #606060;
 			font-family: $Proxima-Nova;
 			font-weight: normal;
 			font-size: 1.25em;
-			color: gray;
+			color: $black;
 			margin-bottom: -15px;
 		}
 	}

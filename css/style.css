@@ -62,7 +62,7 @@
   width: 100vw;
   height: 100vh;
   z-index: 2000;
-  background-color: #f4f8ff; }
+  background-color: #e8ecf7; }
   #title .wrapper {
     position: absolute;
     left: 50%;
@@ -73,17 +73,19 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 40vw;
+    width: 60vh;
     margin-bottom: -25px; }
   #title .heart {
     margin: 15px;
-    width: 100%;
+    width: 30%;
     animation: wiggle 3s infinite; }
+    #title .heart img {
+      width: 100%; }
 @keyframes wiggle {
   0% {
     transform: rotate(0deg) scaleX(1) scaleY(1); }
   25% {
-    transform: rotate(45deg) scaleX(1.5) scaleY(1.5); }
+    transform: rotate(45deg) scaleX(1.7) scaleY(1.7); }
   40% {
     transform: rotate(-37deg) scaleX(1) scaleY(1); }
   50% {
@@ -99,8 +101,9 @@
   #title h1 {
     text-align: center;
     font-family: "Circular Std Black";
-    font-size: 32px;
-    color: #606060; }
+    font-size: 6vh;
+    color: #161a21;
+    z-index: 2000; }
   #title #redBox {
     clip-path: url(#heartsClip);
     -webkit-clip-path: url(#heartsClip);
@@ -114,7 +117,7 @@
     font-family: "Proxima Nova Alt Rg";
     font-weight: normal;
     font-size: 1.25em;
-    color: gray;
+    color: #161a21;
     margin-bottom: -15px; }
 
 #ui {
@@ -151,6 +154,6 @@
   margin: 2.5vh;
   font-family: "Proxima Nova Alt Rg";
   font-size: 1em;
-  color: #606060; }
+  color: #272a30; }
 
 /*# sourceMappingURL=style.css.map */
