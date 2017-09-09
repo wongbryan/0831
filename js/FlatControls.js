@@ -12,7 +12,7 @@ var FlatControls = function( camera, domElement ){
 		var tween = new TWEEN.Tween(_this.camera.position).to(vector, duration);
 		tween.easing(TWEEN.Easing.Exponential.Out);
 		tween.onUpdate(function(){	
-			console.log(_this.camera.position);
+
 			var pos = camera.position;
 			_this.target.set(pos.x, pos.y, 0); //look straight ahead
 			_this.update();

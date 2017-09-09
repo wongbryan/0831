@@ -29,7 +29,7 @@ function initNav(){
 	for ( var i=0; i<HEARTS.length; i++){
 		(function(index){
 			var box = boxes[index];
-			console.log(HEARTS[index]);
+			// console.log(HEARTS[index]);
 			box.addEventListener('mousedown', function(){
 				ui.hide();
 				
